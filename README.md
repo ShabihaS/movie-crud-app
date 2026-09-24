@@ -1,280 +1,70 @@
-# Movie CRUD App
-
-A full-stack movie management application built with **ASP.NET Core Web API and React**. The application allows users to manage movie records, upload movie posters, and interact with a SQL Server database through a RESTful API.
-
-This project demonstrates full-stack development using **C#, .NET, Entity Framework Core, SQL Server, React, and REST APIs**.
-
-## Features
-
-* View a list of movies
-* Add new movies
-* Edit existing movie details
-* Delete movies
-* Upload movie posters
-* Display movie images through static file serving
-* Pagination for movie listings
-* React-based navigation and UI
-* RESTful API integration
-* SQL Server database integration
-* Entity Framework Core for database operations
-* AutoMapper for object mapping
-* Swagger/OpenAPI API documentation
-* CORS configuration for frontend-backend communication
-* Responsive UI using Bootstrap and React-Bootstrap
-
-## Tech Stack
-
-### Frontend
-
-* React 19
-* JavaScript
-* React Router
-* React-Bootstrap
-* Bootstrap 5
-* React Select
-* React Paginate
-* Create React App
-* HTML5
-* CSS3
-
-### Backend
-
-* C#
-* ASP.NET Core Web API
-* .NET 8
-* Entity Framework Core
-* SQL Server
-* AutoMapper
-* REST APIs
-* Swagger / OpenAPI
-* CORS
-* Static file handling
-
-### Development Tools
-
-* Visual Studio
-* Visual Studio Code
-* Git
-* GitHub
-* npm
-* Swagger
-
-## Project Structure
-
-```text
-movie-crud-app/
-│
-├── Demo/
-│   └── react-crud-app/
-│       ├── public/
-│       ├── src/
-│       ├── package.json
-│       ├── package-lock.json
-│       └── README.md
-│
-├── MovieAPIDemo/
-│   ├── Image/
-│   │   └── movie poster images
-│   │
-│   ├── MovieAPIDemo/
-│   │   ├── Controllers/
-│   │   ├── Data/
-│   │   ├── Entities/
-│   │   ├── DTOs/
-│   │   ├── MappingProfiles.cs
-│   │   ├── Program.cs
-│   │   ├── appsettings.json
-│   │   └── MovieAPIDemo.csproj
-│   │
-│   └── MovieAPIDemo.sln
-│
-└── .gitignore
-```
+# Getting Started with Create React App
 
-## API
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-The backend exposes movie-related REST API endpoints through the `MovieController`.
+## Available Scripts
 
-### Movie API
+In the project directory, you can run:
 
-Base route:
+### `npm start`
 
-```text
-/api/Movie
-```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The API supports CRUD operations for movie records.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-| Method | Endpoint          | Purpose                  |
-| ------ | ----------------- | ------------------------ |
-| GET    | `/api/Movie`      | Retrieve movies          |
-| GET    | `/api/Movie/{id}` | Retrieve a movie by ID   |
-| POST   | `/api/Movie`      | Create a new movie       |
-| PUT    | `/api/Movie/{id}` | Update an existing movie |
-| DELETE | `/api/Movie/{id}` | Delete a movie           |
+### `npm test`
 
-### Movie Poster Upload
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-The application also provides a dedicated endpoint for uploading movie posters:
+### `npm run build`
 
-```text
-POST /api/Movie/upload-movie-poster
-```
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-Swagger can be used to explore and test the available API endpoints.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Database
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-The application uses **SQL Server** with **Entity Framework Core**.
+### `npm run eject`
 
-Entity Framework Core is responsible for:
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-* Connecting the application to SQL Server
-* Mapping C# classes to database tables
-* Reading movie records
-* Creating new records
-* Updating existing records
-* Deleting records
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-The database connection is configured through the application's configuration files.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-Before running the backend, update the database connection string to match your local SQL Server environment.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Getting Started
+## Learn More
 
-### Prerequisites
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Make sure you have installed:
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-* .NET 8 SDK
-* Node.js and npm
-* SQL Server
-* Git
+### Code Splitting
 
-### 1. Clone the repository
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-```bash
-git clone https://github.com/ShabihaS/movie-crud-app.git
-cd movie-crud-app
-```
+### Analyzing the Bundle Size
 
-### 2. Configure the database
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-Open the backend configuration:
+### Making a Progressive Web App
 
-```text
-MovieAPIDemo/MovieAPIDemo/appsettings.json
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-Update the SQL Server connection string for your local environment.
+### Advanced Configuration
 
-### 3. Run the backend
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-Open Git Bash or a terminal and navigate to the backend project:
+### Deployment
 
-```bash
-cd MovieAPIDemo/MovieAPIDemo
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-Run the application:
+### `npm run build` fails to minify
 
-```bash
-dotnet run
-```
-
-The API will start using the configured ASP.NET Core development URLs.
-
-Swagger can then be used to test the API.
-
-### 4. Run the React frontend
-
-Open a second terminal:
-
-```bash
-cd Demo/react-crud-app
-```
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-Start the React application:
-
-```bash
-npm start
-```
-
-The frontend runs on:
-
-```text
-http://localhost:3000
-```
-
-## Application Architecture
-
-The application follows a client-server architecture:
-
-```text
-React Frontend
-      │
-      │ HTTP Requests
-      ▼
-ASP.NET Core Web API
-      │
-      │ Entity Framework Core
-      ▼
-SQL Server Database
-```
-
-Movie poster files are served separately through the ASP.NET Core static file configuration.
-
-## Key Development Concepts
-
-This project helped me develop practical experience with:
-
-* Building RESTful APIs with ASP.NET Core
-* Implementing CRUD operations
-* Connecting a React frontend to a .NET backend
-* Working with SQL Server databases
-* Using Entity Framework Core
-* Mapping objects with AutoMapper
-* Handling file uploads
-* Serving static files
-* Configuring CORS
-* Using Swagger for API testing and documentation
-* Managing application state and navigation in React
-* Implementing pagination
-* Building reusable React components
-* Managing a full-stack project with Git and GitHub
-
-## What I Learned
-
-Through this project, I gained hands-on experience building a complete application across both the frontend and backend.
-
-I learned how a React application communicates with a REST API, how backend services interact with a relational database, and how CRUD operations connect the different layers of a full-stack application.
-
-The project also strengthened my understanding of **C#, ASP.NET Core, Entity Framework Core, SQL Server, React, API integration, and Git/GitHub**.
-
-## Future Improvements
-
-Potential improvements include:
-
-* User authentication and authorisation
-* Movie search and filtering
-* Improved form validation
-* Better image upload and validation
-* Responsive UI improvements
-* Improved error handling
-* API and frontend deployment
-* Automated testing
-* Environment-based configuration for API and database settings
-
-## Author
-
-**Shabiha S**
-
-Junior Software Developer | Full-Stack Development
-
-GitHub: [ShabihaS](https://github.com/ShabihaS)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
