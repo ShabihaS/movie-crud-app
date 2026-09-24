@@ -1,21 +1,53 @@
-# Visual Studio
+# ========== .NET / Visual Studio ==========
 .vs/
 **/.vs/
-
-# Build output
 bin/
 obj/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.log
+*.user
+*.suo
+*.swp
+*.dbmdl
+*.bak
+*.ncb
+*.opendb
+*.VC.db
+_TestResults/
+PublishProfiles/
 
-# Node
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# ========== Node / React ==========
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# Environment files
+# Build outputs
+build/
+dist/
+.cache/
+.next/
+out/
+
+# ========== Environment ==========
 .env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# OS files
+# ========== OS Files ==========
 .DS_Store
 Thumbs.db
+desktop.ini
