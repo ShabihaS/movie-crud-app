@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+
 import MovieItem from './movie_item';
 import ReactPaginate from 'react-paginate';
+import React, { useEffect, useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
   const [moviesCount, setMoviesCount] = useState(0);
   const [page, setPage] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [selectedMovieId, setSelectedMovieId] = useState(null);
 
   useEffect(() => {
     getMovies();
@@ -39,6 +43,11 @@ const MovieList = () => {
     setPage(pageIndex.selected);
   };
 
+  const confirmDelete = (id) => {
+  setSelectedMovieId(id);
+  setShowDeleteModal(true);
+};
+
   const deleteMovie = (id) => {
     fetch(process.env.REACT_APP_API_URL + "/movie?id=" + id, {
       method: "DELETE",
@@ -57,33 +66,71 @@ const MovieList = () => {
       .catch(() => alert("Error deleting movie"));
   };
 
-  return (
-    <>
-      {Array.isArray(movies) &&
-        movies.map((m, i) => (
-          <MovieItem key={i} data={m} deleteMovie={deleteMovie} />
-        ))}
-
-      <div className="d-flex justify-content-center">
-        <ReactPaginate
-          previousLabel={"previous"}
-          nextLabel={"next"}
-          breakLabel={"..."}
-          breakClassName={"page-link"}
-          pageCount={moviesCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          previousClassName={"page-link"}
-          nextClassName={"page-link"}
-          activeClassName={"active"}
+ return (
+  <>
+    {Array.isArray(movies) &&
+      movies.map((m, i) => (
+        <MovieItem
+          key={i}
+          data={m}
+          deleteMovie={confirmDelete}
         />
-      </div>
-    </>
-  );
+      ))}
+
+    <div className="d-flex justify-content-center">
+      <ReactPaginate
+        previousLabel={"previous"}
+        nextLabel={"next"}
+        breakLabel={"..."}
+        breakClassName={"page-link"}
+        pageCount={moviesCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        pageClassName={"page-item"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-link"}
+        nextClassName={"page-link"}
+        activeClassName={"active"}
+      />
+    </div>
+
+    {/* Delete Confirmation Modal */}
+    <Modal
+      show={showDeleteModal}
+      onHide={() => setShowDeleteModal(false)}
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Delete Movie</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        Are you sure you want to delete this movie?
+      </Modal.Body>
+
+      <Modal.Footer>
+        <Button
+          variant="secondary"
+          onClick={() => setShowDeleteModal(false)}
+        >
+          Cancel
+        </Button>
+
+        <Button
+          variant="danger"
+          onClick={() => {
+            deleteMovie(selectedMovieId);
+            setShowDeleteModal(false);
+          }}
+        >
+          Delete
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  </>
+);
 };
 
 export default MovieList;

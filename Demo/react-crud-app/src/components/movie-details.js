@@ -20,40 +20,73 @@ const MovieDetail = () => {
     }
   }, [movieid]);
 
-  return (
-    <Row>
-      {movie && (
-        <>
-          <Col xs={12} md={4}>
+ return (
+  <Row className="movie-detail-page">
+    {movie && (
+      <>
+        <Col xs={12} md={5}>
+          <div className="movie-detail__poster-wrapper">
             <img
               src={movie.coverImage || NoImage}
               alt={movie.title}
-              style={{ width: 300, height: 300 }}
+              className="movie-detail__poster"
             />
-          </Col>
-          <Col xs={12} md={8}>
-            <h3>{movie.title}</h3>
-            <p>{movie.description || "N/A"}</p>
-            <div>
-              <b>Language:</b>
+          </div>
+        </Col>
+
+        <Col xs={12} md={7}>
+          <div className="movie-detail__content">
+            <p className="movie-detail__subtitle">MOVIE DETAILS</p>
+
+            <h1 className="movie-detail__title">
+              {movie.title}
+            </h1>
+
+            <p className="movie-detail__description">
+              {movie.description || "No description available."}
+            </p>
+
+            <div className="movie-detail__info">
+              <div className="movie-detail__info-item">
+                <span className="movie-detail__label">
+                  Language
+                </span>
+                <span className="movie-detail__value">
+                  {movie.language || "N/A"}
+                </span>
+              </div>
+
+              <div className="movie-detail__info-item">
+                <span className="movie-detail__label">
+                  Release Date
+                </span>
+                <span className="movie-detail__value">
+                  {movie.releaseDate
+                    ? movie.releaseDate.split("T")[0]
+                    : "N/A"}
+                </span>
+              </div>
+
+              <div className="movie-detail__info-item">
+                <span className="movie-detail__label">
+                  Cast
+                </span>
+                <span className="movie-detail__value">
+                  {movie.actors?.map((x) => x.name).join(", ") ||
+                    "No cast information"}
+                </span>
+              </div>
             </div>
-            <div>{movie.language}</div>
-            <div>
-              <b>Release Date</b>
-            </div>
-            <div>{movie.releaseDate && movie.releaseDate.split("T")[0]}</div>
-            <div>
-              <b>Cast:</b>
-            </div>
-            <div>{movie.actors?.map((x) => x.name).join(", ")}</div>
-          </Col>
-          <Col xs={12}>
-            <Link to="/">Go To Home Page</Link>
-          </Col>
-        </>
-      )}
-    </Row>
-  );
+
+            <Link to="/" className="movie-detail__back">
+              ← Back to Movies
+            </Link>
+          </div>
+        </Col>
+      </>
+    )}
+  </Row>
+);
 };
 
 export default MovieDetail;

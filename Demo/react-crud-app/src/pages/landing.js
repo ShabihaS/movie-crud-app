@@ -11,20 +11,30 @@ const[show,setShow]=useState(false);
   return (
     <>
 
-    <Row>
-        <Col xs={12} md={10}>
-        <h2>Movies</h2>
-        </Col>
+   <section className="movies-header">
+  <Row className="align-items-center">
+    <Col xs={12} md={8}>
+      <p className="movies-header__subtitle">MOVIE COLLECTION</p>
 
-        <Col xs={12} md={2} className='align-self-center'>
-        <Button className='float-right' onClick={() => setShow(true)}>
-            Add new movie
-        </Button>
+      <h1 className="movies-header__title">
+        Movie World
+      </h1>
 
-        </Col>
+      <p className="movies-header__description">
+        Discover, manage and explore your movie collection.
+      </p>
+    </Col>
 
-
-    </Row>
+    <Col xs={12} md={4} className="text-md-end">
+      <Button
+        className="add-movie-btn"
+        onClick={() => setShow(true)}
+      >
+        + Add New Movie
+      </Button>
+    </Col>
+  </Row>
+</section>
 
     <MovieList/>
     <CreateMovieModel show={show} handleClose={()=>setShow(false)}/>

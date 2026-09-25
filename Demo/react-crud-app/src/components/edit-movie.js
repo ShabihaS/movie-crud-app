@@ -4,13 +4,14 @@ import NoImage from '../no-image.png';
 import AsyncSelect from 'react-select/async';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const EditMovie = () => {
+const EditMovie = ({ onCancel }) => {
   const { movieid } = useParams();
   const navigate = useNavigate();
 
-  const [movie, setMovie] = useState({ actors: [] });
-  const [actors, setActors] = useState([]);
-  const [validated, setValidated] = useState(false);
+ const [movie, setMovie] = useState({ actors: [] });
+const [actors, setActors] = useState([]);
+const [validated, setValidated] = useState(false);
+const [imagePreview, setImagePreview] = useState(NoImage);
 
   useEffect(() => {
     if (movieid) {
@@ -25,6 +26,7 @@ const EditMovie = () => {
             }
 
             setMovie({ ...movieData, actors: movieData.actors || [] });
+            setImagePreview(movieData.coverImage || NoImage);
             setActors(
               (movieData.actors || []).map(x => ({ value: x.id, label: x.name }))
             );
@@ -34,23 +36,43 @@ const EditMovie = () => {
     }
   }, [movieid]);
 
-  const handleFileUpload = (event) => {
-    event.preventDefault();
-    const file = event.target.files[0];
-    const form = new FormData();
-    form.append("imageFile", file);
+ const handleFileUpload = (event) => {
+  const file = event.target.files[0];
 
-    fetch(process.env.REACT_APP_API_URL + "/Movie/upload-movie-poster", {
-      method: "POST",
-      body: form
+  if (!file) return;
+
+  // Show selected local image immediately
+  const localPreview = URL.createObjectURL(file);
+  setImagePreview(localPreview);
+
+  const form = new FormData();
+  form.append("imageFile", file);
+
+  fetch(process.env.REACT_APP_API_URL + "/Movie/upload-movie-poster", {
+    method: "POST",
+    body: form,
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Upload response:", data);
+
+      if (data.profileImage) {
+        // Save the real backend image URL
+        setMovie(prev => ({
+          ...prev,
+          coverImage: data.profileImage,
+        }));
+
+        // Use backend URL for preview
+        setImagePreview(data.profileImage);
+      } else {
+        console.error("No profileImage returned from upload");
+      }
     })
-      .then(res => res.json())
-      .then(res => {
-        setMovie(prev => ({ ...prev, coverImage: res.profileImage }));
-      })
-      .catch(() => alert("Error in file upload"));
-  };
-
+    .catch(error => {
+      console.error("Error in file upload:", error);
+    });
+};
   const handleSave = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -94,21 +116,34 @@ const EditMovie = () => {
   };
 
   const handleFieldChange = (event) => {
-    const { name, value } = event.target;
-    setMovie(prev => ({ ...prev, [name]: value }));
-  };
+  const { name, value } = event.target;
+  setMovie(prev => ({ ...prev, [name]: value }));
+};
 
-  const promiseOptions = (inputValue) => {
-    return fetch(process.env.REACT_APP_API_URL + "/Person/Search/" + inputValue)
-      .then(res => res.json())
-      .then(res => {
-        if (res.status === true && res.data.length > 0) {
-          return res.data.map(x => ({ value: x.id, label: x.name }));
-        }
-        return [];
-      })
-      .catch(() => []);
-  };
+ const promiseOptions = (inputValue) => {
+  console.log("Searching actors:", inputValue);
+
+  return fetch(
+    process.env.REACT_APP_API_URL + "/Person/Search/" + inputValue
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      console.log("Actor search response:", res);
+
+      if (res.status === true && res.data.length > 0) {
+        return res.data.map((x) => ({
+          value: x.id,
+          label: x.name,
+        }));
+      }
+
+      return [];
+    })
+    .catch((error) => {
+      console.error("Actor search error:", error);
+      return [];
+    });
+};
 
   const multiSelectChange = (data) => {
     setActors(data);
@@ -118,15 +153,31 @@ const EditMovie = () => {
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSave}>
-      <Form.Group className='d-flex justify-content-center'>
-        <Image width={200} height={200} src={movie.coverImage || NoImage} />
-      </Form.Group>
+      <Form.Group className="movie-upload">
+  <Form.Label className="movie-upload__label">
+    Movie Poster
+  </Form.Label>
 
-      <Form.Group className='d-flex justify-content-center'>
-        <div>
-          <input type='file' onChange={handleFileUpload} />
-        </div>
-      </Form.Group>
+  <div className="movie-upload__preview">
+   <Image
+  src={imagePreview}
+  className="movie-upload__image"
+  alt="Movie poster preview"
+/>
+  </div>
+
+  <div className="movie-upload__input">
+    <Form.Control
+      type="file"
+      accept="image/*"
+      onChange={handleFileUpload}
+    />
+  </div>
+
+  <Form.Text className="movie-upload__help">
+    Choose an image from your computer for the movie poster.
+  </Form.Text>
+</Form.Group>
 
       <Form.Group controlId='formMovieTitle'>
         <Form.Label>Movie Title</Form.Label>
@@ -173,13 +224,55 @@ const EditMovie = () => {
 
       <Form.Group controlId='formMovieActors'>
         <Form.Label>Actors</Form.Label>
-        <AsyncSelect
-          cacheOptions
-          isMulti
-          value={actors}
-          loadOptions={promiseOptions}
-          onChange={multiSelectChange}
-        />
+       <AsyncSelect
+  cacheOptions
+  isMulti
+  value={actors}
+  loadOptions={promiseOptions}
+  onChange={multiSelectChange}
+  placeholder="Search and select actors..."
+  noOptionsMessage={() => "No actors found"}
+  styles={{
+    control: (base) => ({
+      ...base,
+      minHeight: '45px',
+      borderColor: '#cbd5e1',
+      boxShadow: 'none',
+    }),
+
+    input: (base) => ({
+      ...base,
+      color: '#1e293b',
+    }),
+
+    singleValue: (base) => ({
+      ...base,
+      color: '#1e293b',
+    }),
+
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: '#e2e8f0',
+    }),
+
+    multiValueLabel: (base) => ({
+      ...base,
+      color: '#1e293b',
+    }),
+
+    option: (base, state) => ({
+      ...base,
+      color: '#1e293b',
+      backgroundColor: state.isFocused ? '#ede9fe' : '#ffffff',
+      cursor: 'pointer',
+    }),
+
+    menu: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+  }}
+/>
       </Form.Group>
 
       <Form.Group controlId='formMovieLanguage'>
@@ -194,9 +287,19 @@ const EditMovie = () => {
         />
       </Form.Group>
 
-      <Button type='submit'>
-        {movie && movie.id > 0 ? "Update" : "Create"}
-      </Button>
+     <div className="movie-form__actions">
+  <Button type="submit" className="movie-form__save">
+    {movie && movie.id > 0 ? "Update Movie" : "Create Movie"}
+  </Button>
+
+  <Button
+    type="button"
+    className="movie-form__cancel"
+     onClick={onCancel || (() => navigate("/"))}
+  >
+    Cancel
+  </Button>
+</div>
     </Form>
   );
 };

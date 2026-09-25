@@ -77,15 +77,28 @@ const CreateEditActor = () => {
       });
   };
 
-  return (
-    <Row>
-      <Col md={{ span: 6, offset: 3 }}>
-        <h2>{actor.id ? "Edit Actor" : "Create Actor"}</h2>
+ return (
+  <Row className="actor-form-page">
+    <Col md={{ span: 6, offset: 3 }}>
+      <div className="actor-form">
+        <div className="actor-form__header">
+          <p className="actor-form__subtitle">ACTOR MANAGEMENT</p>
+
+          <h2 className="actor-form__title">
+            {actor.id ? "Edit Actor" : "Create Actor"}
+          </h2>
+
+          <p className="actor-form__description">
+            {actor.id
+              ? "Update the actor details below."
+              : "Add a new actor to your movie collection."}
+          </p>
+        </div>
 
         <Form noValidate validated={validated} onSubmit={handleSave}>
-          {/* Name */}
-          <Form.Group className="mb-3" controlId="actorName">
+          <Form.Group className="mb-4" controlId="actorName">
             <Form.Label>Actor Name</Form.Label>
+
             <Form.Control
               required
               type="text"
@@ -94,14 +107,15 @@ const CreateEditActor = () => {
               value={actor.name}
               onChange={handleChange}
             />
+
             <Form.Control.Feedback type="invalid">
               Please provide a name.
             </Form.Control.Feedback>
           </Form.Group>
 
-          {/* Date of Birth */}
-          <Form.Group className="mb-3" controlId="actorDob">
+          <Form.Group className="mb-4" controlId="actorDob">
             <Form.Label>Date of Birth</Form.Label>
+
             <Form.Control
               required
               type="date"
@@ -109,21 +123,30 @@ const CreateEditActor = () => {
               value={actor.dateOfBirth}
               onChange={handleChange}
             />
+
             <Form.Control.Feedback type="invalid">
               Please provide a date of birth.
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button variant="primary" type="submit">
-            {actor.id ? "Update" : "Create"}
-          </Button>{" "}
-          <Button variant="secondary" onClick={() => navigate("/actors")}>
-            Cancel
-          </Button>
+          <div className="actor-form__actions">
+            <Button className="actor-form__save" type="submit">
+              {actor.id ? "Update Actor" : "Create Actor"}
+            </Button>
+
+            <Button
+              className="actor-form__cancel"
+              type="button"
+              onClick={() => navigate("/actors")}
+            >
+              Cancel
+            </Button>
+          </div>
         </Form>
-      </Col>
-    </Row>
-  );
+      </div>
+    </Col>
+  </Row>
+);
 };
 
 export default CreateEditActor;
